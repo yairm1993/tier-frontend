@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tier Manager - Levantar acción</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/global.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <div class="side-mark">T</div>
+        <div>
+          <div class="side-title">Tier Manager</div>
+          <div class="side-sub">SQDCP • Daily</div>
+        </div>
+      </div>
+
+      <div class="side-nav">
+        <a class="side-link" href="./dashboard.html"><span class="material-icons">dashboard</span>Dashboard</a>
+        <a class="side-link active" href="./actions-new.html"><span class="material-icons">add_task</span>Levantar acción</a>
+        <a class="side-link" href="./actions-followup.html"><span class="material-icons">track_changes</span>Seguimiento</a>
+        <a id="adminUsersSide" class="side-link hidden" href="./users-admin.html"><span class="material-icons">manage_accounts</span>Usuarios</a>
+        <div class="side-spacer"></div>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn" id="btnSidebar" type="button" aria-label="Menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="topbar-brand">Acciones</div>
+        </div>
+
+        <nav class="topbar-nav" id="topbarNav">
+          <a class="nav-link" href="./dashboard.html">Dashboard</a>
+          <a class="nav-link active" href="./actions-new.html">Levantar acción</a>
+          <a class="nav-link" href="./actions-followup.html">Seguimiento</a>
+          <a id="adminUsersTop" class="nav-link hidden" href="./users-admin.html">Usuarios</a>
+        </nav>
+
+        <div class="topbar-right">
+          <button class="icon-btn" id="btnNotifications" type="button" aria-label="Notificaciones">
+            <span class="material-icons">notifications</span>
+            <span id="notifBadge" class="badge hidden">0</span>
+          </button>
+          <div class="user-pill" id="userPill">Usuario</div>
+          <button class="btn" id="btnLogout" type="button">Salir</button>
+        </div>
+      </header>
+
+      <main class="container">
+    <section class="page-header">
+      <div>
+        <h1 class="h1">Levantar acción</h1>
+        <div class="muted">Registro formal con responsable, prioridad y envío automático de correo</div>
+      </div>
+    </section>
+
+    <section class="grid split-grid">
+      <div class="card">
+        <div class="card-title">Nueva acción</div>
+        <div class="card-body">
+          <form id="actionForm" class="form">
+            <div class="grid two">
+              <label class="field">
+                <span>Correo del responsable</span>
+                <input type="email" name="owner_email" placeholder="responsable@planta.com" required />
+              </label>
+            </div>
+
+            <div class="grid two">
+              <label class="field">
+                <span>Prioridad</span>
+                <select name="priority" required>
+                  <option value="low">Baja</option>
+                  <option value="medium" selected>Media</option>
+                  <option value="high">Alta</option>
+                  <option value="critical">Crítica</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Fecha compromiso</span>
+                <input type="date" name="due_date" required />
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Título</span>
+              <input name="title" placeholder="Ej. Paro recurrente por sensor" required />
+            </label>
+
+            <label class="field">
+              <span>Descripción</span>
+              <textarea name="description" rows="6" placeholder="Describe el problema, causa probable y contención." required></textarea>
+            </label>
+
+            <div class="row right">
+              <button class="btn" type="reset">Limpiar</button>
+              <button class="btn primary" type="submit">Guardar y notificar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Buenas prácticas</div>
+        <div class="card-body">
+          <div class="callout">
+            <div class="callout-title">Estandarización Tier</div>
+            <div class="muted">Usa títulos cortos, compromisos realistas y evidencia verificable.</div>
+          </div>
+          <div class="spacer"></div>
+          <div class="callout">
+            <div class="callout-title">Prioridad</div>
+            <div class="muted">Crítica: seguridad/calidad; Alta: impacto a entrega; Media/Baja: mejora continua.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+      </main>
+
+      <div id="modalHost" class="modal-host hidden"></div>
+      <div id="toastHost" class="toast-host"></div>
+    </div>
+  </div>
+
+  <script src="./env.js"></script>
+  <script type="module" src="./assets/js/pages/actions-new.js"></script>
+</body>
+</html>

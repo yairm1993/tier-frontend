@@ -1,0 +1,19 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Build artifacts (in case you add a build step later)
+dist/
+build/
+out/
+
+# Env / sensitive config
+env.js
+env.local.js
+.env
+.env.*

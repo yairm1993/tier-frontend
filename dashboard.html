@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tier Manager - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/global.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <div class="side-mark">T</div>
+        <div>
+          <div class="side-title">Tier Manager</div>
+          <div class="side-sub">SQDCP • Daily</div>
+        </div>
+      </div>
+
+      <div class="side-nav">
+        <a class="side-link active" href="./dashboard.html"><span class="material-icons">dashboard</span>Dashboard</a>
+        <a class="side-link" href="./actions-new.html"><span class="material-icons">add_task</span>Levantar acción</a>
+        <a class="side-link" href="./actions-followup.html"><span class="material-icons">track_changes</span>Seguimiento</a>
+        <a id="adminUsersSide" class="side-link hidden" href="./users-admin.html"><span class="material-icons">manage_accounts</span>Usuarios</a>
+        <div class="side-spacer"></div>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn" id="btnSidebar" type="button" aria-label="Menú">
+            <span class="material-icons">menu</span>
+          </button>
+          <div class="topbar-brand">Dashboard</div>
+        </div>
+
+        <nav class="topbar-nav" id="topbarNav">
+          <a class="nav-link active" href="./dashboard.html">Dashboard</a>
+          <a class="nav-link" href="./actions-new.html">Levantar acción</a>
+          <a class="nav-link" href="./actions-followup.html">Seguimiento</a>
+          <a id="adminUsersTop" class="nav-link hidden" href="./users-admin.html">Usuarios</a>
+        </nav>
+
+        <div class="topbar-right">
+          <button class="icon-btn" id="btnNotifications" type="button" aria-label="Notificaciones">
+            <span class="material-icons">notifications</span>
+            <span id="notifBadge" class="badge hidden">0</span>
+          </button>
+          <div class="user-pill" id="userPill">Usuario</div>
+          <button class="btn" id="btnLogout" type="button">Salir</button>
+        </div>
+      </header>
+
+      <main class="container">
+    <section class="page-header">
+      <div>
+        <h1 class="h1">Dashboard SQDCP</h1>
+        <div class="muted">KPIs diarios con metas visuales y semáforo</div>
+      </div>
+
+      <div class="page-actions">
+        <label class="field inline">
+          <span>Fecha</span>
+          <input id="kpiDate" type="date" />
+        </label>
+        <button class="btn primary" id="btnRefresh" type="button">Actualizar</button>
+      </div>
+    </section>
+
+    <section class="grid kpi-grid" id="kpiGrid"></section>
+
+    <section class="grid split-grid">
+      <div class="card">
+        <div class="card-title">Resumen</div>
+        <div class="card-body" id="summaryBox"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Acciones abiertas (Top)</div>
+        <div class="card-body" id="actionsBox"></div>
+      </div>
+    </section>
+      </main>
+
+      <div id="modalHost" class="modal-host hidden"></div>
+      <div id="toastHost" class="toast-host"></div>
+    </div>
+  </div>
+
+  <script src="./env.js"></script>
+  <script type="module" src="./assets/js/pages/dashboard.js"></script>
+</body>
+</html>

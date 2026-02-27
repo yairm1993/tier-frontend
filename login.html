@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tier Manager - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/global.css" />
+</head>
+<body>
+  <div class="app-shell auth-shell">
+    <div class="auth-card card">
+      <div class="brand">
+        <div class="brand-mark">T</div>
+        <div class="brand-text">
+          <div class="brand-title">Tier Manager</div>
+          <div class="brand-subtitle">SQDCP Daily Management</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button id="tabLogin" class="tab active" type="button">Login</button>
+        <button id="tabRecovery" class="tab" type="button">Recuperación</button>
+      </div>
+
+      <form id="loginForm" class="form">
+        <label class="field">
+          <span>Correo</span>
+          <input type="email" name="email" placeholder="usuario@planta.com" required />
+        </label>
+        <label class="field">
+          <span>Contraseña</span>
+          <input type="password" name="password" placeholder="••••••••" required />
+        </label>
+        <button class="btn primary" type="submit">Ingresar</button>
+      </form>
+
+      <form id="recoveryForm" class="form hidden">
+        <label class="field">
+          <span>Correo</span>
+          <input type="email" name="email" placeholder="usuario@planta.com" required />
+        </label>
+        <button class="btn" type="submit">Enviar token por correo</button>
+
+        <div class="divider"></div>
+
+        <label class="field">
+          <span>Token</span>
+          <input type="text" name="token" placeholder="Pega aquí el token" />
+        </label>
+        <label class="field">
+          <span>Nueva contraseña</span>
+          <input type="password" name="new_password" placeholder="Mínimo 8 caracteres" />
+        </label>
+        <button class="btn primary" type="button" id="btnReset">Restablecer contraseña</button>
+      </form>
+
+      <div class="muted small">Versión empresarial - uso interno</div>
+    </div>
+  </div>
+
+  <div id="toastHost" class="toast-host"></div>
+
+  <script src="./env.js"></script>
+  <script type="module" src="./assets/js/pages/login.js"></script>
+</body>
+</html>
