@@ -10,6 +10,11 @@ const btnNewUser = qs('#btnNewUser');
 const usersMeta = qs('#usersMeta');
 const usersTable = qs('#usersTable');
 
+const btnReloadDomains = qs('#btnReloadDomains');
+const btnNewDomain = qs('#btnNewDomain');
+const domainsMeta = qs('#domainsMeta');
+const domainsTable = qs('#domainsTable');
+
 await boot();
 
 async function boot() {
@@ -32,7 +37,11 @@ async function boot() {
   btnReload.addEventListener('click', () => load());
   btnNewUser.addEventListener('click', () => openCreateModal());
 
+  btnReloadDomains.addEventListener('click', () => loadDomains());
+  btnNewDomain.addEventListener('click', () => openCreateDomainModal());
+
   await load();
+  await loadDomains();
 }
 
 async function load() {
@@ -245,6 +254,190 @@ function openEditModal(u) {
 
   openModal({
     title: `Editar usuario #${u.id}`,
+    bodyNode: body,
+    footerButtons: [btnCancel, btnSave],
+  });
+}
+
+async function loadDomains() {
+  domainsMeta.textContent = 'Cargando...';
+  domainsTable.innerHTML = '';
+
+  try {
+    const data = await apiGet('/admin/domains');
+    const items = data.items || [];
+    domainsMeta.textContent = `${items.length} empresas`;
+    renderDomainsTable(items);
+  } catch (e) {
+    domainsMeta.textContent = '';
+    toast({ title: 'No se pudo cargar empresas', body: e.message, variant: 'err' });
+  }
+}
+
+function renderDomainsTable(items) {
+  const table = document.createElement('table');
+  table.className = 'table';
+  table.style.width = '100%';
+  table.style.borderCollapse = 'collapse';
+
+  const thead = document.createElement('thead');
+  const hr = document.createElement('tr');
+  ['Id', 'Empresa', 'Dominio', 'Activo', 'Acciones'].forEach(t => {
+    const th = document.createElement('th');
+    th.textContent = t;
+    th.style.textAlign = 'left';
+    th.style.padding = '10px 8px';
+    th.style.borderBottom = '1px solid rgba(0,0,0,.08)';
+    hr.appendChild(th);
+  });
+  thead.appendChild(hr);
+
+  const tbody = document.createElement('tbody');
+
+  items.forEach(d => {
+    const tr = document.createElement('tr');
+
+    const tdId = dTd(String(d.id));
+    const tdName = dTd(String(d.display_name || ''));
+    const tdDomain = dTd(String(d.domain_name || ''));
+    const tdActive = dTd((String(d.is_active) === '1' || d.is_active === 1) ? 'Sí' : 'No');
+
+    const tdActions = document.createElement('td');
+    tdActions.style.padding = '10px 8px';
+    tdActions.style.borderBottom = '1px solid rgba(0,0,0,.06)';
+
+    const btnEdit = document.createElement('button');
+    btnEdit.className = 'btn';
+    btnEdit.type = 'button';
+    btnEdit.textContent = 'Editar';
+    btnEdit.addEventListener('click', () => openEditDomainModal(d));
+
+    tdActions.appendChild(btnEdit);
+
+    tr.appendChild(tdId);
+    tr.appendChild(tdName);
+    tr.appendChild(tdDomain);
+    tr.appendChild(tdActive);
+    tr.appendChild(tdActions);
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+  domainsTable.appendChild(table);
+
+  function dTd(text) {
+    const el = document.createElement('td');
+    el.textContent = text;
+    el.style.padding = '10px 8px';
+    el.style.borderBottom = '1px solid rgba(0,0,0,.06)';
+    return el;
+  }
+}
+
+function openCreateDomainModal() {
+  const body = document.createElement('div');
+  body.innerHTML = `
+    <div class="grid two">
+      <label class="field"><span>Nombre de empresa</span><input id="d_display_name" placeholder="Astra People" /></label>
+      <label class="field"><span>Dominio</span><input id="d_domain_name" placeholder="astrapeople.com.mx" /></label>
+    </div>
+    <div class="grid two" style="margin-top:10px">
+      <label class="field"><span>Activo</span>
+        <select id="d_active">
+          <option value="1" selected>Sí</option>
+          <option value="0">No</option>
+        </select>
+      </label>
+    </div>
+  `;
+
+  const btnSave = document.createElement('button');
+  btnSave.className = 'btn primary';
+  btnSave.type = 'button';
+  btnSave.textContent = 'Crear';
+  btnSave.addEventListener('click', async () => {
+    const payload = {
+      display_name: String(qs('#d_display_name', body).value || '').trim(),
+      domain_name: String(qs('#d_domain_name', body).value || '').trim().toLowerCase(),
+      is_active: Number(qs('#d_active', body).value || 1),
+    };
+
+    try {
+      await apiPost('/admin/domains/create', payload);
+      closeModal();
+      toast({ title: 'Empresa creada', variant: 'ok' });
+      await loadDomains();
+    } catch (e) {
+      toast({ title: 'No se pudo crear empresa', body: e.message, variant: 'err' });
+    }
+  });
+
+  const btnCancel = document.createElement('button');
+  btnCancel.className = 'btn';
+  btnCancel.type = 'button';
+  btnCancel.textContent = 'Cancelar';
+  btnCancel.addEventListener('click', () => closeModal());
+
+  openModal({
+    title: 'Nueva empresa',
+    bodyNode: body,
+    footerButtons: [btnCancel, btnSave],
+  });
+}
+
+function openEditDomainModal(d) {
+  const body = document.createElement('div');
+  body.innerHTML = `
+    <div class="grid two">
+      <label class="field"><span>Nombre de empresa</span><input id="d_display_name" /></label>
+      <label class="field"><span>Dominio</span><input id="d_domain_name" /></label>
+    </div>
+    <div class="grid two" style="margin-top:10px">
+      <label class="field"><span>Activo</span>
+        <select id="d_active">
+          <option value="1">Sí</option>
+          <option value="0">No</option>
+        </select>
+      </label>
+    </div>
+  `;
+
+  qs('#d_display_name', body).value = String(d.display_name || '');
+  qs('#d_domain_name', body).value = String(d.domain_name || '');
+  qs('#d_active', body).value = (String(d.is_active) === '1' || d.is_active === 1) ? '1' : '0';
+
+  const btnSave = document.createElement('button');
+  btnSave.className = 'btn primary';
+  btnSave.type = 'button';
+  btnSave.textContent = 'Guardar';
+  btnSave.addEventListener('click', async () => {
+    const payload = {
+      id: Number(d.id),
+      display_name: String(qs('#d_display_name', body).value || '').trim(),
+      domain_name: String(qs('#d_domain_name', body).value || '').trim().toLowerCase(),
+      is_active: Number(qs('#d_active', body).value || 1),
+    };
+
+    try {
+      await apiPost('/admin/domains/update', payload);
+      closeModal();
+      toast({ title: 'Empresa actualizada', variant: 'ok' });
+      await loadDomains();
+    } catch (e) {
+      toast({ title: 'No se pudo actualizar empresa', body: e.message, variant: 'err' });
+    }
+  });
+
+  const btnCancel = document.createElement('button');
+  btnCancel.className = 'btn';
+  btnCancel.type = 'button';
+  btnCancel.textContent = 'Cancelar';
+  btnCancel.addEventListener('click', () => closeModal());
+
+  openModal({
+    title: `Editar empresa #${d.id}`,
     bodyNode: body,
     footerButtons: [btnCancel, btnSave],
   });
