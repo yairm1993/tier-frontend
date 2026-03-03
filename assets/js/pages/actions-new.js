@@ -1,11 +1,12 @@
 import { requireAuth, logout } from '../core/auth.js';
-import { apiPost } from '../core/api.js';
+import { apiGet, apiPost } from '../core/api.js';
 import { qs, toast } from '../core/ui.js';
 import { initNotifications } from '../core/notifications.js';
 
 const userPill = qs('#userPill');
 const btnLogout = qs('#btnLogout');
 const form = qs('#actionForm');
+const ownerEmail = qs('#ownerEmail');
 const adminUsersSide = qs('#adminUsersSide');
 const adminUsersTop = qs('#adminUsersTop');
 
@@ -27,6 +28,8 @@ async function boot() {
     window.location.href = './login.html';
   });
 
+  await loadOwners();
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -39,6 +42,11 @@ async function boot() {
       description: String(fd.get('description') || '').trim(),
     };
 
+    if (payload.owner_email === '') {
+      toast({ title: 'Selecciona un responsable', body: 'El responsable debe estar registrado.', variant: 'err' });
+      return;
+    }
+
     try {
       const res = await apiPost('/actions', payload);
       toast({ title: 'Acción registrada', body: `Id: ${res.action_id}`, variant: 'ok' });
@@ -47,4 +55,36 @@ async function boot() {
       toast({ title: 'No se pudo guardar', body: err.message, variant: 'err' });
     }
   });
+}
+
+async function loadOwners() {
+  try {
+    const data = await apiGet('/domain/members');
+    const items = (data && data.items) ? data.items : [];
+
+    const selected = String(ownerEmail.value || '');
+    ownerEmail.innerHTML = '';
+
+    const opt0 = document.createElement('option');
+    opt0.value = '';
+    opt0.disabled = true;
+    opt0.selected = true;
+    opt0.textContent = 'Selecciona un responsable';
+    ownerEmail.appendChild(opt0);
+
+    items
+      .filter(u => (String(u.is_active) === '1' || u.is_active === 1))
+      .forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = String(u.email || '');
+        opt.textContent = `${String(u.full_name || '').trim()} (${String(u.email || '').trim()})`;
+        ownerEmail.appendChild(opt);
+      });
+
+    if (selected) {
+      ownerEmail.value = selected;
+    }
+  } catch (err) {
+    toast({ title: 'No se pudo cargar responsables', body: err.message, variant: 'err' });
+  }
 }
