@@ -17,7 +17,7 @@ async function boot() {
   if (!user) return;
 
   userPill.textContent = user.full_name;
-  if (String(user.role) === 'admin') {
+  if (String(user.role || '').toLowerCase().trim() === 'admin') {
     if (adminUsersSide) adminUsersSide.classList.remove('hidden');
     if (adminUsersTop) adminUsersTop.classList.remove('hidden');
   }
@@ -28,7 +28,7 @@ async function boot() {
     window.location.href = './login.html';
   });
 
-  await loadOwners();
+  await loadOwners(user);
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -57,9 +57,10 @@ async function boot() {
   });
 }
 
-async function loadOwners() {
+async function loadOwners(user) {
   try {
-    const data = await apiGet('/domain/members');
+    const isAdmin = user && String(user.role || '').toLowerCase().trim() === 'admin';
+    const data = await apiGet(isAdmin ? '/admin/users' : '/domain/members');
     const items = (data && data.items) ? data.items : [];
 
     const selected = String(ownerEmail.value || '');

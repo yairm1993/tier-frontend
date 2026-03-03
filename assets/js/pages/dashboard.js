@@ -29,7 +29,7 @@ async function boot() {
   if (!user) return;
 
   userPill.textContent = user.full_name;
-  if (String(user.role) === 'admin') {
+  if (String(user.role || '').toLowerCase().trim() === 'admin') {
     if (adminUsersSide) adminUsersSide.classList.remove('hidden');
     if (adminUsersTop) adminUsersTop.classList.remove('hidden');
   }
