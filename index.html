@@ -1,233 +1,392 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TIER</title>
-    <style>
-      :root {
-        --bg: #0b1220;
-        --panel: rgba(255, 255, 255, 0.06);
-        --border: rgba(255, 255, 255, 0.12);
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.72);
-        --brand: #7c3aed;
-        --brand2: #22c55e;
-        --shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
-        --radius: 16px;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      * { box-sizing: border-box; }
+<title>AstraPeople | Software para Manufactura y Recursos Humanos</title>
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
-          "Apple Color Emoji", "Segoe UI Emoji";
-        color: var(--text);
-        background:
-          radial-gradient(900px 500px at 12% 8%, rgba(124, 58, 237, 0.35), transparent 60%),
-          radial-gradient(800px 520px at 88% 12%, rgba(34, 197, 94, 0.22), transparent 55%),
-          radial-gradient(900px 600px at 55% 100%, rgba(59, 130, 246, 0.18), transparent 60%),
-          linear-gradient(180deg, #070b14, var(--bg));
-      }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-      a { color: inherit; text-decoration: none; }
+<style>
 
-      .wrap {
-        max-width: 1024px;
-        margin: 0 auto;
-        padding: 48px 20px;
-      }
+/* ===== VARIABLES DE COLOR (AJUSTAR A TU LOGO) ===== */
 
-      header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 24px;
-      }
+:root{
+--primary:#0A2540;
+--secondary:#2563EB;
+--accent:#06B6D4;
+--dark:#0F172A;
+--light:#F8FAFC;
+--gray:#64748B;
+}
 
-      .brand {
-        display: grid;
-        gap: 8px;
-      }
+/* ===== RESET ===== */
 
-      .brand h1 {
-        margin: 0;
-        font-size: 28px;
-        line-height: 1.1;
-        letter-spacing: 0.4px;
-      }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-      .brand p {
-        margin: 0;
-        color: var(--muted);
-        max-width: 68ch;
-      }
+body{
+background:var(--light);
+color:var(--dark);
+}
 
-      .pill {
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.05);
-        padding: 10px 12px;
-        border-radius: 999px;
-        color: var(--muted);
-        font-size: 13px;
-        white-space: nowrap;
-      }
+/* ===== NAVBAR ===== */
 
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 14px;
-        margin-top: 18px;
-      }
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:white;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+position:sticky;
+top:0;
+z-index:100;
+}
 
-      .card {
-        grid-column: span 12;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        padding: 18px;
-        position: relative;
-        overflow: hidden;
-      }
+.logo{
+font-size:22px;
+font-weight:700;
+color:var(--primary);
+}
 
-      .card::before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        background: radial-gradient(420px 200px at 20% 0%, rgba(124, 58, 237, 0.28), transparent 62%);
-        pointer-events: none;
-      }
+.nav-links a{
+margin-left:25px;
+text-decoration:none;
+color:var(--dark);
+font-weight:500;
+}
 
-      .card > * { position: relative; }
+.nav-links a:hover{
+color:var(--secondary);
+}
 
-      .card h2 {
-        margin: 0 0 6px;
-        font-size: 16px;
-      }
+/* ===== HERO ===== */
 
-      .card p {
-        margin: 0 0 14px;
-        color: var(--muted);
-        font-size: 14px;
-      }
+.hero{
+padding:100px 8%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+flex-wrap:wrap;
+background:linear-gradient(135deg,#0A2540,#1E3A8A);
+color:white;
+}
 
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
+.hero-text{
+max-width:600px;
+}
 
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.06);
-        font-weight: 600;
-        font-size: 14px;
-      }
+.hero h1{
+font-size:48px;
+margin-bottom:20px;
+}
 
-      .btn.primary {
-        border-color: rgba(124, 58, 237, 0.45);
-        background: linear-gradient(180deg, rgba(124, 58, 237, 0.40), rgba(124, 58, 237, 0.16));
-      }
+.hero p{
+font-size:18px;
+margin-bottom:30px;
+color:#e2e8f0;
+}
 
-      .btn.good {
-        border-color: rgba(34, 197, 94, 0.45);
-        background: linear-gradient(180deg, rgba(34, 197, 94, 0.35), rgba(34, 197, 94, 0.12));
-      }
+.hero button{
+padding:14px 28px;
+border:none;
+background:var(--accent);
+color:white;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
 
-      .btn:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.09);
-      }
+.hero button:hover{
+background:#0891b2;
+}
 
-      .btn:active {
-        transform: translateY(0);
-      }
+/* ===== SECTIONS ===== */
 
-      .btn small {
-        font-weight: 700;
-        opacity: 0.72;
-      }
+.section{
+padding:80px 8%;
+text-align:center;
+}
 
-      .kpi {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
+.section h2{
+font-size:36px;
+margin-bottom:20px;
+}
 
-      .kpi div {
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.04);
-      }
+.section p{
+max-width:700px;
+margin:auto;
+color:var(--gray);
+margin-bottom:50px;
+}
 
-      .kpi b { display: block; font-size: 13px; opacity: 0.92; }
-      .kpi span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; }
+/* ===== SERVICES ===== */
 
-      footer {
-        margin-top: 18px;
-        color: rgba(255, 255, 255, 0.55);
-        font-size: 12px;
-      }
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+}
 
-      @media (min-width: 800px) {
-        .card.left { grid-column: span 7; }
-        .card.right { grid-column: span 5; }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <header>
-        <div class="brand">
-          <h1>TIER</h1>
-          <p>Entrada rápida a tus pantallas del frontend.</p>
-        </div>
-        <div class="pill">Frontend estático</div>
-      </header>
+.card{
+background:white;
+padding:35px;
+border-radius:10px;
+box-shadow:0 8px 20px rgba(0,0,0,0.05);
+text-align:left;
+transition:0.3s;
+}
 
-      <main class="grid">
-        <section class="card left">
-          <h2>Navegación</h2>
-          <p>Accesos directos a las páginas existentes del proyecto.</p>
-          <div class="actions">
-            <a class="btn primary" href="login.html"><span>Login</span> <small>→</small></a>
-            <a class="btn" href="dashboard.html"><span>Dashboard</span> <small>→</small></a>
-            <a class="btn" href="users-admin.html"><span>Usuarios (Admin)</span> <small>→</small></a>
-            <a class="btn good" href="actions-new.html"><span>Nueva Acción</span> <small>→</small></a>
-            <a class="btn" href="actions-followup.html"><span>Seguimiento</span> <small>→</small></a>
-          </div>
-        </section>
+.card:hover{
+transform:translateY(-5px);
+}
 
-        <aside class="card right">
-          <h2>Notas</h2>
-          <p>Esto es solo un punto de entrada. Puedes personalizarlo sin afectar las demás pantallas.</p>
-          <div class="kpi">
-            <div>
-              <b>Config</b>
-              <span>Si usas variables por ambiente, define tu `env.js` (ignorado por git).</span>
-            </div>
-            <div>
-              <b>Assets</b>
-              <span>Usa la carpeta `assets/` para logos, css, imágenes, etc.</span>
-            </div>
-          </div>
-        </aside>
-      </main>
+.card h3{
+margin-bottom:10px;
+color:var(--primary);
+}
 
-      <footer>
-        <div>Archivo: <code>tier-frontend/index.html</code></div>
-      </footer>
-    </div>
-  </body>
+.card p{
+color:var(--gray);
+font-size:14px;
+}
+
+/* ===== FEATURES ===== */
+
+.features{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:40px;
+align-items:center;
+}
+
+.feature-box{
+text-align:left;
+}
+
+.feature-box h3{
+margin-bottom:10px;
+color:var(--secondary);
+}
+
+/* ===== CTA ===== */
+
+.cta{
+background:var(--primary);
+color:white;
+padding:80px 8%;
+text-align:center;
+}
+
+.cta h2{
+margin-bottom:20px;
+}
+
+.cta button{
+padding:15px 35px;
+border:none;
+background:var(--accent);
+color:white;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* ===== FOOTER ===== */
+
+.footer{
+background:#020617;
+color:#94a3b8;
+padding:40px 8%;
+text-align:center;
+font-size:14px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:768px){
+
+.hero{
+flex-direction:column;
+text-align:center;
+}
+
+.hero h1{
+font-size:36px;
+}
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+<div class="logo">AstraPeople</div>
+
+<div class="nav-links">
+<a href="#">Inicio</a>
+<a href="#soluciones">Soluciones</a>
+<a href="#software">Software</a>
+<a href="#contacto">Contacto</a>
+</div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Software para transformar la gestión del talento en manufactura</h1>
+
+<p>
+AstraPeople desarrolla aplicaciones web especializadas para empresas de manufactura que buscan optimizar sus procesos de Recursos Humanos, entrenamiento operativo y mejora continua.
+</p>
+
+<button>Solicitar Demo</button>
+
+</div>
+
+</section>
+
+
+<!-- SOLUCIONES -->
+
+<section class="section" id="soluciones">
+
+<h2>Soluciones para Manufactura</h2>
+
+<p>
+Aplicaciones diseñadas para mejorar la productividad, el desarrollo del talento y la eficiencia operativa en entornos industriales.
+</p>
+
+<div class="services">
+
+<div class="card">
+<h3>Gestión de Mejora Continua</h3>
+<p>
+Plataforma para administrar ideas de mejora, proyectos Kaizen, seguimiento de acciones y medición del impacto en productividad.
+</p>
+</div>
+
+<div class="card">
+<h3>Sistema de Entrenamiento Operativo</h3>
+<p>
+Administra certificaciones, matrices de habilidades, entrenamiento en puesto y seguimiento de competencias técnicas.
+</p>
+</div>
+
+<div class="card">
+<h3>Gestión de Competencias</h3>
+<p>
+Identifica las habilidades necesarias para cada puesto y evalúa el nivel de dominio de cada colaborador.
+</p>
+</div>
+
+<div class="card">
+<h3>Reclutamiento por Habilidades</h3>
+<p>
+Sistema de selección basado en competencias reales del puesto y evaluación estructurada de candidatos.
+</p>
+</div>
+
+<div class="card">
+<h3>Control de Disciplina</h3>
+<p>
+Registro digital de amonestaciones, incidencias y seguimiento del historial laboral del colaborador.
+</p>
+</div>
+
+<div class="card">
+<h3>Software a la Medida</h3>
+<p>
+Desarrollo de aplicaciones personalizadas para resolver necesidades específicas de tu operación.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- BENEFICIOS -->
+
+<section class="section">
+
+<h2>¿Por qué AstraPeople?</h2>
+
+<div class="features">
+
+<div class="feature-box">
+<h3>Diseñado para Manufactura</h3>
+<p>
+Entendemos los procesos industriales y desarrollamos soluciones alineadas a operaciones de producción.
+</p>
+</div>
+
+<div class="feature-box">
+<h3>Digitalización de Procesos</h3>
+<p>
+Reduce el uso de papel y centraliza la información en plataformas web accesibles desde cualquier dispositivo.
+</p>
+</div>
+
+<div class="feature-box">
+<h3>Decisiones Basadas en Datos</h3>
+<p>
+Dashboards e indicadores que permiten medir desempeño, entrenamiento y mejora continua.
+</p>
+</div>
+
+<div class="feature-box">
+<h3>Escalable</h3>
+<p>
+Las aplicaciones pueden crecer con la organización y adaptarse a nuevas necesidades.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta">
+
+<h2>Impulsa la transformación digital de tu operación</h2>
+
+<p>Agenda una demostración y descubre cómo AstraPeople puede optimizar la gestión del talento en tu empresa.</p>
+
+<br>
+
+<button>Solicitar Demostración</button>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer class="footer" id="contacto">
+
+<p>AstraPeople © 2026</p>
+<p>Software especializado para manufactura y gestión del talento</p>
+
+</footer>
+
+</body>
 </html>
